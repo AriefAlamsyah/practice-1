@@ -1,6 +1,6 @@
-# [Nama Agensi] — Agency Website
+# Lentera Kriya — Agency Website
 
-A 3-page website for a small Indonesian digital agency that **builds websites** and **manages social media** for UMKM (small and growing local businesses).
+A 3-page website for **Lentera Kriya**, a fictional small Indonesian digital agency based in Bandung, that **builds websites** and **manages social media** for UMKM (small and growing local businesses).
 
 The site is written in Indonesian and has one main goal: getting visitors to **contact the agency**, mainly through WhatsApp and otherwise through a contact form.
 
@@ -112,18 +112,28 @@ The site is ready for **Vercel**. Import this repository, keep the framework pre
 
 ---
 
-## Before going live: replace the placeholders
+## About the sample content
 
-Anything written in **[square brackets]** is temporary text waiting for the agency's real details:
+This is a **practice project**. Everything about the agency is **fictional but realistic**, so the site looks finished:
 
-- [ ] Agency name, everywhere it says **[Nama Agensi]**
-- [ ] WhatsApp number (currently a sample number)
-- [ ] Email address, also used by the contact form
-- [ ] Instagram account, office address, founding year and city
-- [ ] Package prices and numbers marked **[X]** or **Rp [...]**
-- [ ] Real photos of the team and the agency's work, replacing the striped placeholder boxes
-- [ ] Real portfolio projects (the current ones are labelled *"Contoh Desain"*, sample designs)
-- [ ] Real testimonials and numbers, **or remove those sections** until you have them
-- [ ] The live website address in the contact form, so visitors return to the "Terima kasih!" message after sending
+- **Agency:** Lentera Kriya, founded in 2022 in Bandung
+- **Team:** Raka Pratama (Web Developer), Nadia Putri (Social Media Specialist), Dimas Ardiansyah (Graphic Designer)
+- **Clients and portfolio:** Dapur Rina Bakery (Bandung), Butik Laras (Surabaya), Klinik Gigi Senyum Sehat (Jakarta), Kopi Senja (Yogyakarta), Bengkel Jaya Motor (Semarang), Sari Alam Herbal (Malang)
+- **Prices:** Website Starter from Rp 1.500.000, Website Bisnis from Rp 3.500.000, Sosmed Basic from Rp 1.200.000/month, Sosmed Growth from Rp 2.500.000/month
+- **Numbers:** 40+ clients, 65+ projects, 4 years, 12 cities
 
-> **Honesty rule:** only show real numbers, real projects and real testimonials. Never invent them.
+A small note in the footer of every page says the content is fictional.
+
+### Turning it into a real agency website
+Swap the sample content for real details:
+
+- [ ] Agency name, logo, address and working hours
+- [ ] **WhatsApp number**: the current one (0812-3456-7890) is a sample and may belong to a stranger
+- [ ] **Email**: halo@lenterakriya.id is not a real inbox, so the contact form won't deliver messages until it's changed
+- [ ] Instagram account and social media links
+- [ ] The live website address in the contact form (currently set to lentera-kriya.vercel.app)
+- [ ] Real prices, numbers, team members and photos, replacing the striped photo boxes and initials
+- [ ] Real portfolio projects and **real testimonials** (with the clients' permission)
+- [ ] Remove the "proyek latihan" note in the footer
+
+> **Honesty rule for a real launch:** only show real numbers, real projects and real testimonials. Never invent them.

@@ -559,13 +559,13 @@ body { padding-top: 4.2rem; }
   max-width: 100%;
   border-radius: 50%;
   margin: 0 auto 1rem;
-  background: var(--tint);
-  border: 2px dashed #c4c0b8;
+  background: var(--brand-soft);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  color: var(--muted);
+  font-size: 2rem;           /* big initials until a real photo is added */
+  font-weight: 800;
+  color: var(--brand);
 }
 .team-card .role { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
 
