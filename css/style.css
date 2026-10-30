@@ -1,0 +1,748 @@
+/* =========================================================
+   STYLE.CSS — the "clothes" for all 3 pages
+   One file, shared by index.html, layanan.html, tentang.html.
+   Change a color here and it changes on every page.
+   ========================================================= */
+
+/* ---------- 1. Colors & sizes we reuse everywhere ---------- */
+/* Palette: "Soft Black & Warm White" — black and its complement (white),
+   softened so it's easy on the eyes: no pure #000 or pure #fff for big areas,
+   just charcoal and a warm off-white, with light warm greys in between. */
+:root {
+  --brand: #222222;        /* charcoal: links, icons, closing band */
+  --brand-dark: #000000;   /* full black, only for hover */
+  --brand-soft: #ecebe7;   /* light warm grey: icon circles, chips */
+  --accent: #222222;       /* charcoal: main action buttons */
+  --accent-dark: #444444;  /* a bit lighter on hover, so you see it react */
+  --bg: #fbfaf8;           /* warm off-white page background (softer than pure white) */
+  --tint: #f2f0ec;         /* slightly darker warm white: section backgrounds */
+  --text: #262626;         /* soft black for text */
+  --muted: #66625d;        /* warm grey for smaller text */
+  --line: #e3e0da;         /* thin borders */
+  --white: #ffffff;        /* cards and text on dark buttons */
+  --footer: #1a1a1a;       /* the darkest area: footer */
+  --wa: #25d366;           /* WhatsApp green (kept, people recognise it) */
+
+  /* Picture colors for drawings & placeholders */
+  --art-1: #dcd9d3;        /* light grey */
+  --art-2: #c4c0b8;        /* medium grey */
+  --art-3: #ebe8e2;        /* pale grey */
+
+  --radius: 1rem;          /* how round the corners are */
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  --max: 1120px;           /* widest the content can get */
+
+  /* Space that grows & shrinks with the screen: clamp(smallest, ideal, biggest) */
+  --gutter: clamp(8px, 4vw, 16px);             /* space on the left & right edge */
+  --space: clamp(2rem, 1rem + 6vw, 5.5rem);   /* space above & below each section */
+  --gap: clamp(0.75rem, 0.5rem + 1.5vw, 1.25rem);
+}
+
+/* ---------- 2. Basic reset ---------- */
+* { box-sizing: border-box; }
+
+/* The whole site is measured in "rem" (= this font size).
+   This size shrinks on small screens, so text, buttons and icons all shrink together. */
+html {
+  font-size: clamp(10px, 7px + 2.4vw, 17px);
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.6rem;   /* jump links stop below the fixed menu, not under it */
+}
+
+body {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  overflow-wrap: anywhere;   /* long words break instead of poking out of the screen */
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--brand); }
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 0.75rem; }
+h1 { font-size: clamp(1.5rem, 1rem + 3vw, 2.8rem); }
+h2 { font-size: clamp(1.3rem, 0.9rem + 2vw, 2rem); }
+h3 { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.15rem); }
+p  { margin: 0 0 1rem; }
+
+/* The "box" that keeps content centered with space on the sides */
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------- 3. Sections ---------- */
+.section { padding: var(--space) 0; }
+.section-tint { background: var(--tint); }
+
+.section-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+}
+.section-head p { color: var(--muted); }
+
+/* ---------- 4. Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  min-height: 2.9rem;          /* easy to tap with a thumb */
+  max-width: 100%;             /* never wider than the screen */
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-primary { background: var(--accent); color: var(--white); }
+.btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn-outline { background: transparent; color: var(--brand); border-color: var(--brand); }
+.btn-outline:hover { background: var(--brand-soft); }
+.btn-white { background: var(--white); color: var(--brand); border-color: var(--white); }
+.btn-white:hover { background: var(--brand-soft); }
+.btn-ghost-white { background: transparent; color: var(--white); border-color: var(--white); }
+.btn-ghost-white:hover { background: rgba(255, 255, 255, 0.15); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* ---------- 5. Header / Navbar ---------- */
+.header {
+  position: fixed;            /* always glued to the top of the screen */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+/* The fixed menu floats above the page, so we push the page down by the menu's height */
+body { padding-top: 4.2rem; }
+
+/* Grid with 2 columns: logo (takes the free space) | ☰ (only as wide as it needs).
+   So the logo is ALWAYS on the left and the ☰ ALWAYS on the right, on one line. */
+.nav {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 4.2rem;
+  align-items: center;
+  column-gap: 0.75rem;
+}
+.logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav .logo {
+  min-width: 0;
+  white-space: nowrap;        /* the menu logo stays on one line… */
+  overflow: hidden;
+  text-overflow: ellipsis;    /* …and shows "…" if the screen is too small */
+  overflow-wrap: normal;
+}
+.logo span { color: var(--muted); }
+
+/* The menu links (and the "Hubungi Kami" button, the last item) */
+.nav-links {
+  display: none;              /* hidden on phones until the ☰ is tapped */
+  grid-column: 1 / -1;        /* the opened menu uses the full width, below the top line */
+  list-style: none;
+  margin: 0;
+  padding: 0 0 1rem;
+  max-height: calc(100vh - 4.2rem);   /* if the menu is long, scroll inside it */
+  overflow-y: auto;
+}
+.nav-links a:not(.btn) {
+  display: block;
+  padding: 0.75rem 0;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+}
+.nav-links a:not(.btn):hover { color: var(--muted); }
+.nav-links a.active { text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 2px; }
+.nav-cta { padding-top: 1rem; }
+.nav-cta .btn { width: 100%; }   /* full-width button inside the phone menu */
+
+/* Hamburger trick: a hidden checkbox. Tap the ☰ label = tick the box = show menu */
+.menu-toggle { display: none; }
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  border-radius: 0.6rem;
+}
+.menu-icon:hover { background: var(--brand-soft); }
+.menu-toggle:checked ~ .nav-links { display: block; }
+
+/* ---------- 6. Hero (big top part of Beranda) ---------- */
+.hero { padding: var(--space) 0; background: linear-gradient(180deg, var(--tint), var(--bg)); }
+.hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+.hero h1 { font-size: clamp(1.6rem, 1rem + 3.4vw, 2.9rem); }
+.hero .lead { font-size: 1.1rem; color: var(--muted); }
+.trust-line { margin-top: 1rem; font-size: 0.95rem; color: var(--muted); }
+
+/* Laptop + phone drawn only with CSS (no picture file needed) */
+.mockup { position: relative; padding: 0 1.5rem 1.5rem 0; }
+.laptop {
+  background: var(--footer);
+  border-radius: 0.9rem 0.9rem 0.25rem 0.25rem;
+  padding: 0.6rem;
+}
+.screen {
+  background: var(--white);
+  border-radius: 0.4rem;
+  aspect-ratio: 16 / 10;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-rows: 0.9rem 1fr 1.5rem;
+}
+.bar { background: var(--tint); border-radius: 0.25rem; }
+.bar-brand { background: var(--accent); width: 40%; border-radius: 99px; }
+.screen-hero { background: linear-gradient(135deg, var(--art-1), var(--art-3)); border-radius: 0.4rem; }
+.phone {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 30%;
+  background: var(--footer);
+  border-radius: 1.1rem;
+  padding: 0.4rem;
+  box-shadow: var(--shadow);
+}
+.phone-screen {
+  background: var(--white);
+  border-radius: 0.8rem;
+  aspect-ratio: 9 / 17;
+  padding: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: start;
+  gap: 3px;
+}
+.phone-screen span { aspect-ratio: 1; border-radius: 3px; background: var(--art-1); }
+.phone-screen span:nth-child(2n) { background: var(--art-2); }
+.phone-screen span:nth-child(3n) { background: var(--art-3); }
+
+/* ---------- 7. Cards & grids ---------- */
+.grid { display: grid; gap: var(--gap); }
+.grid-2, .grid-3, .grid-4 { grid-template-columns: minmax(0, 1fr); }
+.grid > *, .split > *, .hero-grid > *, .contact-grid > * { min-width: 0; }  /* let grid items shrink */
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(0.9rem, 0.5rem + 2vw, 1.5rem);
+}
+.card p:last-child { margin-bottom: 0; }
+.card-shadow { box-shadow: var(--shadow); border: none; }
+
+/* Round icon at the top of a card */
+.icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.9rem;
+  background: var(--brand-soft);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.icon svg { width: 1.6rem; height: 1.6rem; }
+
+.closing-note { text-align: center; margin-top: 2rem; font-weight: 700; font-size: 1.1rem; }
+
+/* Service cards on Beranda */
+.service-card { display: flex; flex-direction: column; }
+.service-card .art {
+  height: 8.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, var(--art-1), var(--brand-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+.service-card .art.social { background: linear-gradient(135deg, var(--art-2), var(--tint)); }
+.service-card .btn { margin-top: auto; align-self: flex-start; }
+
+/* Two-column layout (text + picture) */
+.split { display: grid; gap: 2rem; align-items: center; }
+
+/* Placeholder box where a real photo will go later */
+.photo-placeholder {
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg, var(--tint), var(--tint) 12px, var(--art-3) 12px, var(--art-3) 24px);
+  border: 2px dashed #c4c0b8;
+  min-height: clamp(8rem, 40vw, 16rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Check-mark list */
+.check-list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.check-list li { position: relative; padding-left: 2rem; margin-bottom: 0.75rem; }
+.check-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Small label, e.g. "Contoh Desain" */
+.tag {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.tag-warn { background: var(--art-3); color: var(--muted); border: 1px dashed var(--art-2); }
+
+/* ---------- 8. Portfolio cards ---------- */
+.project-card {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.project-thumb {
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--art-1), var(--brand-soft));
+}
+.project-thumb.social { background: linear-gradient(135deg, var(--art-2), var(--tint)); }
+.project-body { padding: clamp(0.9rem, 0.5rem + 2vw, 1.25rem); }
+.project-body h3 { margin-bottom: 0.25rem; }
+.project-meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+/* ---------- 9. Steps (Cara Kerja) ---------- */
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.5rem; }
+.step { display: flex; gap: 1rem; align-items: flex-start; min-width: 0; }
+.step-num {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step > div { min-width: 0; }
+.step h3 { margin-bottom: 0.25rem; }
+.step p { color: var(--muted); margin: 0; }
+
+/* ---------- 10. Testimonials ---------- */
+.quote { font-size: 1.05rem; font-style: italic; }
+.person { display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; }
+.avatar {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.person > div { min-width: 0; }
+.person small { display: block; color: var(--muted); }
+
+/* ---------- 11. Closing CTA band ---------- */
+.cta-band {
+  background: var(--brand);
+  color: var(--white);
+  text-align: center;
+  padding: var(--space) 0;
+}
+.cta-band p { max-width: 620px; margin: 0 auto 1.5rem; opacity: 0.9; }
+.cta-band .btn-row { justify-content: center; }
+
+/* ---------- 12. Small page header (Layanan, Tentang) ---------- */
+.page-header {
+  background: linear-gradient(180deg, var(--tint), var(--bg));
+  padding: var(--space) 0 calc(var(--space) * 0.6);
+  text-align: center;
+}
+.page-header p { color: var(--muted); max-width: 640px; margin: 0 auto 1.5rem; }
+.page-header .btn-row { justify-content: center; }
+
+/* "Cocok untuk" chips */
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.chip {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-size: 0.9rem;
+}
+
+/* ---------- 13. Pricing tabs (radio button trick) ---------- */
+/* Two hidden radio buttons. Clicking a tab label picks one radio,
+   and CSS shows the matching group of cards. */
+.tab-radio { position: absolute; opacity: 0; pointer-events: none; }
+.tab-labels { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; }
+.tab-labels label {
+  min-height: 2.75rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid var(--brand);
+  color: var(--brand);
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.tab-panel { display: none; }
+#tab-web:checked ~ .tab-labels label[for="tab-web"],
+#tab-sosmed:checked ~ .tab-labels label[for="tab-sosmed"] { background: var(--brand); color: var(--white); }
+#tab-web:checked ~ #panel-web,
+#tab-sosmed:checked ~ #panel-sosmed { display: grid; }
+
+.price-card { position: relative; display: flex; flex-direction: column; }
+.price-card .for { color: var(--muted); }
+.price { font-size: 1.5rem; font-weight: 800; color: var(--brand); margin: 0.5rem 0 1rem; }
+.price small { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+.price-card .btn { margin-top: auto; }
+.price-note { text-align: center; margin-top: 1.5rem; }
+
+/* ---------- 14. Portfolio filter (radio button trick again) ---------- */
+.filter-radio { position: absolute; opacity: 0; pointer-events: none; }
+.filter-labels { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; }
+.filter-labels label {
+  min-height: 2.75rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+#f-all:checked ~ .filter-labels label[for="f-all"],
+#f-web:checked ~ .filter-labels label[for="f-web"],
+#f-sosmed:checked ~ .filter-labels label[for="f-sosmed"] {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--white);
+}
+/* Hide the cards that don't match the chosen filter */
+#f-web:checked ~ .grid .is-sosmed,
+#f-sosmed:checked ~ .grid .is-web { display: none; }
+
+/* ---------- 15. Pop-up (modal) using :target ---------- */
+/* Clicking a link to #proyek-1 makes the box with id="proyek-1" the "target",
+   and CSS shows it. The ✕ link goes to "#portofolio" to close it. */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 20, 20, 0.6);
+  padding: var(--gutter);
+  overflow-y: auto;
+}
+.modal:target { display: flex; align-items: center; justify-content: center; }
+.modal-box {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: clamp(1rem, 0.5rem + 3vw, 1.75rem);
+  padding-top: 2.75rem;
+  max-width: 560px;
+  width: 100%;
+}
+.modal-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 1.3rem;
+}
+.modal-close:hover { background: var(--brand-soft); }
+.modal-images { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 1rem 0; }
+.modal-images div { aspect-ratio: 4 / 3; border-radius: 0.6rem; background: var(--tint); }
+.story dt { font-weight: 800; color: var(--brand); }
+.story dd { margin: 0 0 0.75rem; }
+
+/* ---------- 16. FAQ accordion (<details> opens by itself) ---------- */
+.faq { max-width: 760px; margin: 0 auto; }
+.faq details {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.1rem 3rem 1.1rem 1.25rem;
+  font-weight: 700;
+  position: relative;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding: 0 1.25rem 1.1rem; margin: 0; color: var(--muted); }
+
+/* ---------- 17. Team ---------- */
+.team-card { text-align: center; }
+.team-photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  max-width: 100%;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: var(--tint);
+  border: 2px dashed #c4c0b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.team-card .role { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
+
+/* ---------- 18. Numbers band ---------- */
+.numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; text-align: center; }
+.numbers strong { display: block; font-size: 2rem; color: var(--brand); }
+.numbers span { color: var(--muted); }
+
+/* ---------- 19. Contact ---------- */
+.contact-grid { display: grid; gap: 1.5rem; }
+.contact-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.contact-list li { padding: 0.9rem 0; border-top: 1px solid var(--line); }
+.contact-list strong { display: block; }
+
+.form label { display: block; font-weight: 700; margin-bottom: 0.4rem; }
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.9rem;
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid #cdc9c2;
+  border-radius: 0.6rem;
+  font: inherit;
+  background: var(--white);
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus { outline: 3px solid var(--art-2); border-color: var(--brand); }
+.form .hint { font-size: 0.85rem; color: var(--muted); margin: -0.75rem 0 1.1rem; }
+.form .btn { width: 100%; }
+
+/* Success message: hidden until the page address ends with #terima-kasih */
+.success { display: none; background: var(--brand-soft); border: 1px solid var(--art-1); color: var(--brand-dark); margin-bottom: 1.5rem; }
+.success:target { display: block; }
+
+/* ---------- 20. Footer ---------- */
+.footer { background: var(--footer); color: #c9c6c0; padding: var(--space) 0 1.5rem; font-size: 0.95rem; }
+.footer a { color: #c9c6c0; text-decoration: none; }
+.footer a:hover { color: var(--white); }
+.footer h4 { color: var(--white); margin: 0 0 0.75rem; }
+.footer ul { list-style: none; padding: 0; margin: 0; }
+.footer li { margin-bottom: 0.5rem; }
+.footer-grid { display: grid; gap: 2rem; }
+.footer-grid > * { min-width: 0; }
+.footer .logo { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid #2f2f2f;
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+.socials { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; }
+.socials a {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #2c2c2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---------- 21. Floating WhatsApp button ---------- */
+.wa-float {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 60;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--wa);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+}
+.wa-float svg { width: 55%; height: 55%; }
+/* The little bubble that pops up after 4 seconds — pure CSS animation */
+.wa-tip {
+  display: none;              /* hidden on very small screens (no room) */
+  position: absolute;
+  right: calc(100% + 0.6rem);
+  white-space: nowrap;
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  animation: show-tip 0.4s ease 4s forwards;
+}
+@keyframes show-tip { to { opacity: 1; } }
+
+/* ---------- 22. Phones: buttons in the middle ---------- */
+/* On phones (narrower than 720px), every button sits in the center.
+   On tablet & laptop they go back to the normal left/side position. */
+@media (max-width: 719px) {
+  .btn-row { justify-content: center; }
+  .btn {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;          /* equal "auto" space on both sides = centered */
+    margin-right: auto;
+  }
+  .service-card .btn { align-self: center; }
+  .nav-cta .btn, .form .btn { width: 100%; }   /* these stay full width */
+}
+
+/* ---------- 23. Tiny screens (smaller than any normal phone) ---------- */
+/* Squeeze the padding so nothing sticks out, even on a 50px-wide window. */
+@media (max-width: 240px) {
+  :root { --gutter: 3px; }
+  .card, .project-body, .modal-box { padding: 0.4rem; }
+  .btn, .tab-labels label, .filter-labels label { padding: 0.4rem 0.5rem; }
+  .chip { padding: 0.2rem 0.4rem; }
+  .icon { width: 2rem; height: 2rem; border-radius: 0.5rem; }
+  .icon svg { width: 1.1rem; height: 1.1rem; }
+  .step, .person { flex-direction: column; align-items: flex-start; }
+  .mockup { padding: 0 0.5rem 0.5rem 0; }
+  .screen { padding: 0.25rem; }
+  .laptop { padding: 0.25rem; }
+  .check-list li { padding-left: 1.6rem; }
+  .faq summary { padding: 0.6rem 1.8rem 0.6rem 0.5rem; }
+  .faq summary::after { right: 0.5rem; }
+  .faq details p { padding: 0 0.5rem 0.6rem; }
+  .wa-float { width: 2.5rem; height: 2.5rem; }
+}
+
+/* ---------- 24. Bigger screens (tablet & laptop) ---------- */
+/* Everything above is for phones first. Below we add changes for wider screens. */
+@media (min-width: 480px) {
+  .wa-tip { display: block; }
+}
+
+@media (min-width: 720px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .numbers { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1.3fr; }
+}
+
+@media (min-width: 960px) {
+  .hero-grid, .split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split.reverse > :first-child { order: 2; }
+  .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .contact-grid { grid-template-columns: 1fr 1.1fr; align-items: start; }
+
+  /* Steps go side by side, with a line joining the circles */
+  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); position: relative; }
+  .steps::before {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    left: 12%;
+    right: 12%;
+    height: 2px;
+    background: var(--line);
+  }
+  .step { flex-direction: column; align-items: center; text-align: center; position: relative; }
+
+  /* Menu always visible in one row, no hamburger.
+     The "Hubungi Kami" button sits at the end of the row. */
+  .menu-icon { display: none; }
+  .nav { grid-template-columns: auto auto; justify-content: space-between; }
+  .nav-links { display: flex !important; grid-column: auto; align-items: center; gap: 1.75rem; padding: 0; max-height: none; overflow: visible; }
+  .nav-links a:not(.btn) { padding: 0.5rem 0; border-bottom: none; }
+  .nav-cta { padding-top: 0; }
+  .nav-cta .btn { width: auto; min-height: 2.75rem; padding: 0.5rem 1.1rem; font-size: 0.95rem; }
+}
